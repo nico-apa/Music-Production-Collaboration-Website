@@ -1,0 +1,102 @@
+<html>
+    <head>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/assets/createConfig.css">
+
+    </head>
+
+    <body>
+
+        <!-- This CSS class creates a flex box/ bootstrap grid that has 12 columns and centers the content -->
+        <div class="container">
+
+            <!-- Defines one row in the grid-->
+            <div class="row"> 
+
+                <!-- This div takes up 6 columns of space, skipping the first 3 columns so it can be centered-->
+                <div class="col-6 offset-3" id="main-column"> 
+                    
+                    <h1> Let's Get It Set Up! </h1>
+                    
+                    <!-- The main container that we see in the site -->
+                    <div id="title-and-form-container"> 
+
+                        <div id="title-div"> Session Configuration </div>
+
+                        <form method="POST" action="/create/done">
+                        
+                            <div class="my-form-group"> 
+                                <label for="name" class="form-label"> Name of session </label>
+                                <input type="text" id="name" class="form-control" placeholder="My Session . . ." name="session_name" required> 
+                            </div>
+            
+                            <div class="my-form-group"> 
+                                <label for="genre-select" class="form-label"> What genre are you aiming for? </label>
+                                <select id="genre-select" class="form-select" name="genre" required> </select> 
+                            </div>
+                            
+                            <div class="my-form-group"> 
+                                <label for="DAW-select" class="form-label"> What DAW are you using? </label>
+                                <select id="DAW-select" class="form-select" placeholder="My Session ..." name="daw_type" required> </select>
+                            </div>
+                            
+                            <div class="my-form-group"> 
+                                <label for="visibility" class="form-label"> Choose a visibility for the session </label>
+                                <select id="visibility" class="form-select" name="visibility" required>
+                                    <option> </option> 
+                                    <option value="public"> Anyone Hop In </option>
+                                    <option value="private"> Private Eyes Only </option>
+                                </select>
+                            </div>
+            
+                            <div class="my-form-group">
+                                <label for="info" class="form-label"> Any additional info for your session? </label>
+                                <textarea  id="info" class="form-control" placeholder="My Session ..." name="info"> </textarea>
+                            </div>
+                            
+                            <div class="my-form-group">
+                                <button type="submit" class="btn btn-success"> Ready </button>
+                            </div>
+            
+                        </form>
+                    </div>
+                
+                </div>
+
+            </div>
+
+        </div>
+
+        <script> 
+
+            function initSelect(select_ptr, value_arr) {
+
+                let option_lst = value_arr.reduce( ((acc, h) => acc + `<option> ${h} </option>`), "<option> </option>" );
+                select_ptr.innerHTML = option_lst;
+
+                return;
+            }
+
+            /* Add more genres and DAWs as needed */
+            const genre_arr = ["Pop", "Rock", "Hip Hop", "Rap", "Country", "Jazz", "Blues", "Classical",
+                               "Electronic", "Dance", "Reggae", "Metal", "Indie", "Folk", "R&B", "Soul",
+                               "Funk", "Punk", "Alternative", "Bluegrass", "World", "Reggaeton", "Latin",
+                               "Gospel", "Instrumental", "Ambient", "Techno", "House", "Trance"];
+
+            const daw_arr = ["Ableton Live", "FL Studio (Fruity Loops)", "Logic Pro X", "Pro Tools", 
+                             "Cubase", "Studio One", "Reason", "Bitwig Studio", "GarageBand","Avid Sibelius",
+                             "Reaper", "Presonus Studio One", "Steinberg Nuendo","Digital Performer", 
+                             "LMMS (Linux MultiMedia Studio)", "Audacity"];
+
+            let genre_select = document.querySelector("#genre-select");
+            let daw_select = document.querySelector("#DAW-select");
+
+            initSelect(genre_select, genre_arr);
+            initSelect(daw_select, daw_arr);
+
+        </script>
+
+    </body>
+    
+</html>

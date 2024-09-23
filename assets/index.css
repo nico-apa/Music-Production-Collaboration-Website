@@ -1,0 +1,100 @@
+/* After 16th: Add some type of live background  */
+
+body { 
+
+    /* Sets the root font-size */
+    font-size: 20px;
+
+    /* Imports custom font */
+    font-family: 'trip-sans-variable';
+
+    /* Apply the animation to body */
+    animation: liveBackground 20s ease infinite;
+
+    /* Configures live background */
+    background: linear-gradient(45deg, #ff5e00, #0078ff, #00ff78, #ff00f6);
+    background-size: 800% 800%;
+}
+
+#title {
+    font-size: 3rem;
+    font-weight: bold; 
+}
+
+/* Creates a flex box so that we can center the div with black border.
+   Maybe, instead of using a flex box, we can center by using position*/
+#flex-container {
+
+    display: flex;
+    height: 100%;
+    /* border: 1px solid red; */
+    justify-content: center;
+    align-items: center;
+}
+
+
+#flex-container div {
+
+    /* Creates another flex so that we can center the title and buttons */
+    display: flex;
+    /* By default, flex changes the orientation of all child elements to be inline,
+     * but this will change it so that the children are laid out vertically */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    /* Changes the height and the width of this div of to 50% of the parent div */
+    height: 50%;
+    width: 50%;
+
+    padding: 10%
+}
+
+#flex-container div h1 {
+    /* border: 1px solid purple; */
+    font-size: 3rem;
+    flex: .3;
+}
+
+
+#flex-container div button {
+    width: 100%;
+    flex: .3;
+    border-radius: 5px; /* Add a slight border-radius for rounded corners */
+    font-size: 1.2rem;
+    background-color: #3498db; /* Button background color */
+    color: #fff; /* Text color */
+    padding: 10px 20px; /* Padding for a more comfortable size */
+    border: none;
+    cursor: pointer; /* Add a pointer cursor on hover for better UX */
+    transition: background-color 0.3s ease; /* Smooth transition on hover */
+
+}
+
+
+/* TODO: Change the size of the height */
+#flex-container div button:hover {
+    /* Shrinks text and button down to same size */
+    height: 95%;
+    width: 95%;
+    font-size: 95%;
+
+    background-color: #2980b9; /* Darker color on hover */    
+}
+
+@keyframes liveBackground {
+    0% {
+        background-position: 0% 0%;
+    }
+    100% {
+        background-position: 100% 100%;
+    }
+}
+
+@font-face {
+    font-family: 'trip-sans-variable';
+    /* Pulls file from current diretory and imports it into our project */
+    src: url('trip-sans-variable.ttf') format('truetype'); 
+}
+
+  

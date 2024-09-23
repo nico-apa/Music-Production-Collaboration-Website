@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/assets/sessions.css">
+        <title>Session</title>
+    </head>
+
+    <body>
+
+        <!-- This div contains the three main containers: stream, file-select, chat -->
+        <div id="top-div">
+            <!-- div that allows us to have to headers within the same line -->
+            <div id="stream-and-header-container">
+                
+                <div id="header-div">
+                    <!-- div for innerHTML that changes stream status depending if user is live or not -->
+                    <span id="streamStatus"> </span>
+                    <span id="recordCircle"> </span>
+                </div>
+            
+                <!-- displays video of livestreamed youtube videos -->
+                <div id="stream-container"> 
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/i5BrupBYcDQ" frameborder="0" allowfullscreen id="stream"></iframe>
+                </div>
+            </div>    
+            
+            <div id="file-div">    
+                <div id="fileName">Files Displayed Here!</div>
+
+                <!-- allows user to upload files -->
+                <input type="file" id="fileInput" style="display: none;">
+
+                <!-- Button to trigger file input -->
+                <button id="fileSelect" onclick="selectFile()">Select File</button>
+            </div>
+
+            <div id="chat-div">
+                <div id="chatHeader"> CHAT </div>
+                <!-- display chat input box and calls function to store in localstorage -->
+                <div id="chat-container"></div>
+                <input type="text" id="message-input" placeholder="Type your message">
+                <button onclick="sendMessage()">Send</button>
+            </div> 
+
+            <!-- Creates a popup -->
+            <!-- TODO: need to make popup a form. What if selected a button call like 'change', then that created a new popup from-->
+            <div class="popup" id="infoPopup">
+                <!-- list to display all the information of the session -->
+                <p><b>Session Information</b></p>
+                <ul>
+                    <li>Genre: <!-- EJS VARIABLE HERE --></li> 
+                    <li>Date Started: <!-- EJS VARIABLE HERE --></li>
+                    <li>Number of Files: <!-- EJS VARIABLE HERE --></li>
+                    <li>Collaborators: <!-- EJS VARIABLE HERE --></li>
+                    <li>Visibility: <!-- EJS VARIABLE HERE --></li>
+                    <li>Session ID: <!-- EJS VARIABLE HERE --></li>
+                    <li>Number of Viewers: <!-- EJS VARIABLE HERE --></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- The div contains the start recording, end recording, and info buttons -->
+        <div id="bottom-div">
+            <!-- Red Button -->
+            <button id="toggleStream" class="streamButtons">GO LIVE</button>
+            
+            <!-- Black Button -->
+            <button id="quitStream" class="streamButtons">END LIVE</button>
+
+            <button type="button" id="infoButton"> SESSION INFO </button>
+        </div>
+
+        <script>
+            "use strict";
+
+            // function that sends messages to localstorage
+            function sendMessage() {
+                let messageInput = document.getElementById('message-input');
+                let message = messageInput.value.trim();
+    
+                if (message !== '') {
+                    let messages = getMessages();
+                    messages.push(message);
+                    localStorage.setItem('chatMessages', JSON.stringify(messages));
+    
+                    messageInput.value = '';
+    
+                    displayMessages();
+                }
+            }
+
+            // pulls messages from storage
+            function getMessages() {
+                return JSON.parse(localStorage.getItem('chatMessages')) || [];
+            }
+    
+            // Function to display messages in the chat
+            function displayMessages() {
+                let chatContainer = document.getElementById('chat-container');
+                chatContainer.innerHTML = '';
+    
+                let messages = getMessages();
+                messages.forEach(message => {
+                    let messageElement = document.createElement('div');
+                    messageElement.textContent = message;
+                    chatContainer.appendChild(messageElement);
+                });
+    
+            }
+
+            function selectFile() {
+                document.getElementById("fileInput").click();
+            }
+
+            // event listener to display file name and type
+            document.getElementById('fileInput').addEventListener('change', function() {
+                var fileInput = document.getElementById('fileInput');
+                var fileNameDisplay = document.getElementById('fileName');
+    
+                // Display the selected file name
+                fileNameDisplay.textContent = 'Uploaded File: ' + fileInput.files[0].name;
+            });
+
+            // Initializes the stream to be on standby
+            document.getElementById("streamStatus").innerHTML = "STANDBY";
+            document.getElementById("recordCircle").style.display = "none";
+
+            // When clicked, stream will start and be live
+            document.querySelector("#toggleStream").onclick = () => {
+                document.getElementById("streamStatus").innerHTML = "LIVE";
+                let streamState = document.getElementById("streamStatus");
+                streamState.style.color = "red";
+
+                // Record symbol appears when the user goes live
+                document.getElementById("recordCircle").style.display = "inline-block";
+            }
+
+            // When clicked, stream will end and will be on 'standby'
+            document.querySelector("#quitStream").onclick = () => {
+                document.getElementById("streamStatus").innerHTML = "STANDBY"
+                let streamStop = document.getElementById("streamStatus");
+                streamStop.style.color = "white";
+
+                // Turns off the record symbol when stream quits
+                document.getElementById("recordCircle").style.display = "none";
+            }
+
+            // Event listener to set up a pop up when the "Info. button is clicked"
+            document.addEventListener('DOMContentLoaded', function () {
+                // Allows pop up to function
+                infoButton.addEventListener('click', function (event) {
+                    event.stopPropagation(); 
+                    infoPopup.style.display = 'block';
+                });
+            
+                // Closes pop up when the user clicks off of it
+                document.addEventListener('click', function (event) {
+                    let isClickInsidePopup = infoPopup.contains(event.target);
+                    let isClickOnInfoButton = (event.target === infoButton);
+            
+                    if (!isClickInsidePopup && !isClickOnInfoButton) {
+                        infoPopup.style.display = 'none';
+                    }
+                });
+
+                // Closes pop up when the user clicks "esc"
+                document.addEventListener('keydown', function (event) {
+                    if (event.key === 'Escape') {
+                        infoPopup.style.display = 'none';
+                    }
+                });
+
+            });
+
+        </script>
+    </body>
+</html>

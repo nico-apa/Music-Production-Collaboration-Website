@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <!-- Will makes a GET request to the 'assets' endpoint speciying the desired css file -->
+        <link rel="stylesheet" href="/assets/joinPage.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
+    </head>
+
+    <body>
+
+        <div id="flex-container">
+
+            <div id="public-bar">
+                <span id="public-text"> Public </span>
+                <br>
+
+                <!-- Might need to add my own submit button next to the select to send POST req -->
+                <div id="title-and-select-container">
+                    <span> Filter By Genres </span>
+
+                    <!-- Surronded the select bar in another div so that I could style the select -->
+                    <div id="select-container">
+                        <select id="genres-select" multiple>
+                            <!-- Options will be injected through javascript -->
+                        </select>
+                    </div>
+
+                </div>
+
+                <div id="display-area">
+
+                </div>
+
+            </div>
+
+            <!-- <div id="private-bar">
+
+                <span> Private </span>
+                <br>
+                <div id="input-container">
+                    <span> Type in key </span>
+                    
+                    <input type="text" id="private-key-input" placeholder="abc123. . .">
+                </div>
+                
+            </div> -->
+
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/js/multi-select-tag.js"></script>
+
+        <script>
+
+            async function getPublicSessions() {
+                
+                let response = await fetch("/join/public");
+                let json = await response.json();
+
+                display_area.innerHTML = "";
+                json.forEach( (elem => { 
+
+                    display_area.innerHTML += convertToDiv(elem);
+
+                }));
+            }
+
+            /* This function will retrieve the tags selected, then perform a GET request to the backend */
+            async function buttonClick(tags_selected) {
+
+                console.log(tags_selected)
+
+                let query_args, response, json;               
+
+                /* Constructs the query arguments out of the array of tags */
+                query_args = tags_selected.reduce( (acc, h, ind) => {
+                                        
+                    /* if we are at the last index of the arr, then don't include '&' */
+                    return acc + `genreTags=${h.label}` +  "&";
+
+                }, "" );
+                                
+                response = await fetch("/join/public?" + query_args);
+                json = await response.json();
+
+                display_area.innerHTML = "";
+                json.forEach( (elem => { 
+
+                    display_area.innerHTML += convertToDiv(elem);
+
+                }));
+            }
+
+            function convertToDiv(sessionObj) {
+
+                console.log(sessionObj)
+
+                /* TODO: Need to give the card's a certain flex unit so that they maintain the same size, 
+                 * so that when you have a larger screen they don't just stretch to maintain three a row.
+                 * In that scenario, they would look start to look ugly, what would be better is if they all
+                 * maintained the same size, but if the screen was larger, instead of stretching them, we would
+                 * just fit more of them on the row.
+                 */
+
+                return  `<a href="http://localhost:5000/session/${sessionObj.sessionID}">` + 
+                            "<div class=\"card\">" + 
+                                "<div class=\"card-pic\">" + 
+
+                                "</div>" + 
+
+                                "<div class=\"card-info\">" +
+                                    `<h3> ${sessionObj.session_name} </h3>` +
+                                    `<p> ${sessionObj.daw_type} </p>` +  
+                                    `<div id=\"tag-container\"> ${convertToTags(sessionObj.genre)} </div>` +
+                                    // `<p> ${sessionObj.info} </p>` +
+                                "</div>"
+                            "</div>" +
+                        "</a>"
+            }
+
+            /* Will be more handy when we have to display multiple tags instead of 1 */
+            function convertToTags(genres) {
+
+                return `<span class=\"tag\"> ${genres} </span>`;
+            }
+
+            /* Copied and pasted from the other file, NOT GOOD! 
+             * Anyways, just initializes the select html element with given labels */
+            function initSelect(select_ptr, value_arr) {
+
+                let option_lst = value_arr.reduce( ((acc, h) => acc + `<option> ${h} </option>`), "<option> </option>" );
+                select_ptr.innerHTML = option_lst;
+
+                return;
+            }
+
+            /* Add more genres and DAWs as needed */
+            const genre_arr = ["Pop", "Rock", "Hip Hop", "Rap", "Country", "Jazz", "Blues", "Classical",
+                               "Electronic", "Dance", "Reggae", "Metal", "Indie", "Folk", "R&B", "Soul",
+                               "Funk", "Punk", "Alternative", "Bluegrass", "World", "Reggaeton", "Latin",
+                               "Gospel", "Instrumental", "Ambient", "Techno", "House", "Trance"];
+
+            let display_area = document.querySelector("#display-area");
+            let genre_select = document.querySelector("#genres-select");
+            // let private_textbox = document.querySelector("#private-key-input");
+            
+            // /* Checks if ENTER key was pressed down in the textbox */
+            // private_textbox.addEventListener("keydown", (e) => {
+
+            //     if (e.key !== "Enter") { return; }
+
+            //     /* TODO: Extract value, the perform a POST request to the back end */
+            //     console.log("In input");
+            // });
+
+            /* Needed to call this function before calling the 'MultiSelectTag' constructor otherwise
+             * it would try to create the multiselect bar without having any '<option> </option>'  */
+            initSelect(genre_select, genre_arr);
+
+            /* This creates the multiselect functionality described
+             * in the README found here: https://github.com/habibmhamadi/multi-select-tag */
+            new MultiSelectTag('genres-select', {
+                rounded: true,
+                onChange: buttonClick
+            });
+
+            getPublicSessions();
+
+            /* TODO: Perform a GET request that retrieves all of the public sessions.
+             *       The reason is so that we can filter based on tag on front end.
+             */
+
+        </script>
+
+    </body>
+
+</html>

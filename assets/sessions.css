@@ -1,0 +1,223 @@
+body {
+    height: 99.8vh; /* The body will use 97% of the viewport for its height */
+    border: 1px solid black;
+    font-family: 'trip-sans-variable', sans-serif;
+    margin: 0;
+    /* padding: 10px; */
+}
+
+/************************************* TOP DIV CSS *************************************/
+
+#top-div {
+    display: flex;
+    /* border: 1px solid blue; */
+    height: 95%;
+}
+
+#stream-and-header-container {
+    /* Uses 60% of the containing flex box's width (containing flex box = 'top-div') */
+    width: 55%;
+    /* Uses 100% of the containing flex box's height (containing flex box = 'top-div')*/
+    height: 100%;
+    
+    /* border: 1px solid green; */
+    /* padding-left: 10px; */
+
+}
+
+#stream-and-header-container #header-div {
+    
+    /* Making this a flex box so that I can vertically center the children (stream status and red circle) */
+    display: flex;
+    align-items: center;
+    height: 8%;
+    background-color: black;
+    border-bottom: .5px solid rgba(255, 255, 255, 0.374);
+    font-size: 2rem;    
+    /* border: 1px solid palevioletred; */
+}
+
+#stream-and-header-container #header-div #streamStatus {
+    font-size: 30px;
+    font-weight: bold;
+    margin-right: 10px;
+    color: white;
+    /* border: 1px solid rgb(238, 255, 0); */ 
+}
+
+/* Style for the red circle when stream is live */
+#stream-and-header-container #header-div #recordCircle {
+    display: none; /* Initially hide the circle */
+    width: 30px;
+    height: 30px;
+    background-color: red;
+    border-radius: 50%;
+    animation-name: pulse;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+
+    /* border: 1px dashed firebrick; */
+}
+
+/* Animates the live red circle */
+@keyframes pulse {
+    0%{
+        box-shadow: 0px 0px 5px 0px rgba(173,0,0,.3);
+    }
+    65%{
+        box-shadow: 0px 0px 5px 10px rgba(173,0,0,.3);
+    }
+    90%{
+        box-shadow: 0px 0px 5px 10px rgba(173,0,0,0);
+    }
+}
+
+#stream-and-header-container #stream-container {
+
+    /* Makes it so the padding compresses the content area rather 
+     * than pushing some of the borders (like top and bottom) away */
+    box-sizing: border-box;
+    height: 91.9%;
+    width: 100%;
+    background-color: rgb(14, 130, 224);
+    padding: 15px;
+
+    /* border: 1px dashed gold; */
+}
+
+#stream-and-header-container #stream-container #stream {
+    /* border: 1px solid rgb(255, 19, 19); */
+    border-radius: 10px;
+
+    height: 100%;
+    width: 100%;
+
+    background-color: white;
+}
+
+#file-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 22.5%;
+    border-left: .5px solid rgba(255, 255, 255, 0.374);
+    border-right: .5px solid rgba(255, 255, 255, 0.374);
+    background-color: skyblue;
+}
+
+#fileSelect {
+    width: 100%;
+    height: 5%;
+}
+
+#fileName {
+    height: 95%;
+}
+
+#chat-div {
+    width: 22.5%;
+    background-color: rgb(14, 130, 224);
+}
+
+#chat-div #chatHeader {
+    
+    /* Making this a flex box so that I can vertically center the children (stream status and red circle) */
+    display: flex;
+    align-items: center;
+    height: 8%;
+    background-color: black;
+    border-bottom: .5px solid rgba(255, 255, 255, 0.374);
+    color: white;
+    font-size: 2rem;
+    /* border: 1px solid palevioletred; */
+}
+
+
+/* Lines up the chat header
+
+    #chatHeader {
+        position: relative;
+        left: 70.5rem;
+        top: -5rem;
+    }
+
+    Lines up the chat box (temporary)
+    #chatBox {
+        position: relative;
+        left: 20rem;
+        top: -5rem;
+        height: 30rem;
+        width: 15rem;
+    } 
+*/
+
+/* Creates popup and styles it */
+.popup {
+    display: none;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+    line-height: 2;
+}
+
+/************************************* BOTTOM DIV CSS *************************************/
+#bottom-div { 
+    height: 5%;
+    display: flex;
+    background-color: white;
+    border-top: .5px solid rgba(255, 255, 255, 0.374);
+
+    /* border: 1px solid gold; */
+}
+
+/* Bolds the stream buttons when clicked */
+.streamButtons:active {
+    font-weight: bold;
+}
+
+/* Style for red GO LIVE text */
+#toggleStream {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 24px; 
+    color: red;
+
+    /* position: relative;
+    top: -5rem; */
+}
+
+/* Style for black END LIVE text*/
+#quitStream {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 24px; 
+    color: black;
+
+    /* position: relative;
+    top: -5rem; */
+}
+
+/* Lines up the "Info." button */
+#infoButton {
+    /* position: absolute;
+    left: 90rem;
+    top: 2rem; */
+    
+    /* Makes the button go all the way to the end/ right of the flexbox */
+    margin-left:auto;
+    border: .5px solid rgb(96, 96, 96);
+}
+
+@font-face {
+    font-family: 'trip-sans-variable';
+    /* Pulls file from current diretory and imports it into our project */
+    src: url('trip-sans-variable.ttf') format('truetype'); 
+}
