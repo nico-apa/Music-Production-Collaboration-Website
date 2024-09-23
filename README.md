@@ -1,6 +1,7 @@
 <h1>Music Production Collaboration Website</h1>
- ### [YouTube Demonstration](https://youtu.be/1938Kskk66A?si=2rW5g0ZhTDEMAA7h)
 
+ ### [YouTube Demonstration](https://youtu.be/1938Kskk66A?si=2rW5g0ZhTDEMAA7h)
+ 
 <h2>Description</h2>
 This app will allow music producers to find a way to collaborate seamlessly. I wanted to make this process as simple as possible for them by minimizing the amount of work and clicks the users need to do. We want the the process to be effortless and to achieve this we made minimal pages.
 
